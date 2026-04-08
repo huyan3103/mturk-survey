@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <style>
@@ -145,68 +145,183 @@
   <body>
     <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
     <crowd-form answer-format="flatten-objects">
-      <![CDATA[ <div class="container">
-      <!----------------Instruction--------------------> <div
-      class="instruction-container"> <div class="tab-header"> <button
-      type="button" class="tab-btn active" onclick="openTab(event,
-      'Summary')">Summary</button> <button type="button" class="tab-btn"
-      onclick="openTab(event, 'Taxonomy')">Taxonomy Reference</button> </div>
-      <div id="Summary" class="tab-content active"> <h3>Task Summary</h3> <p>
-      This study is part of a broader research project investigating privacy
-      risks and human evaluation of AI systems. The project has received ethics
-      approval from Macquarie University. Please review the <a
-      href="https://shorturl.at/hme0c" target="_blank">Participant Information
-      and Consent Form (PICF)</a> before proceeding. By continuing with this
-      task, you indicate your consent to participate. </p> <p> Help us improve
-      AI safety by validating a <strong>Privacy-Leak Detection
-      Framework</strong>. In this task, you will review real-world dialogues
-      between users and ChatGPT. Your goal is to determine if user prompts
-      contain sensitive disclosures or if the assistant is exposing personal
-      information and making "hidden" guesses about the user (e.g., guessing
-      their age or location based on context). </p> <ul> <li><strong>Part
-      A:</strong> Read the full dialogue to understand the conversation
-      flow.</li> <li><strong>Part B:</strong> Evaluate whether the system
-      correctly identified privacy risks within specific phrases.</li>
-      <li><strong>Part C:</strong> Verify if the identified risk is assigned to
-      the correct category in our Privacy Taxonomy.</li> </ul> </div> <div
-      id="Taxonomy" class="tab-content"> <h3>Privacy Taxonomy</h3> <table
-      class="taxonomy-table"> <thead> <tr style="background-color: #f2f2f2;">
-      <th>Privacy Pillar</th> <th>Category</th> <th>Definition</th> </tr>
-      </thead> <tbody> <tr> <td rowspan="2">Information Collection</td>
-      <td>Surveillance</td> <td>Collecting data about individuals without their
-      knowledge or consent.</td> </tr> <tr> <td>Interrogation</td> <td>Prompting
-      users to disclose sensitive information.</td> </tr> <tr> <td
-      rowspan="5">Information Processing</td> <td>Aggregation</td> <td>Combining
-      data to reveal new insights.</td> </tr> <tr> <td>Identification</td>
-      <td>Re-identifying individuals from anonymized data.</td> </tr> <tr>
-      <td>Insecurity</td> <td>Failing to protect personal data adequately,
-      leading to potential data leaks.</td> </tr> <tr> <td>Secondary Use</td>
-      <td>Using collected data for purposes beyond the original intent, such as
-      profiling.</td> </tr> <tr> <td>Exclusion</td> <td>Preventing individuals
-      from accessing or controlling their data.</td> </tr> <tr> <td
-      rowspan="7">Information Dissemination</td> <td>Breach of
-      Confidentiality</td> <td>Sharing private information without
-      authorization.</td> </tr> <tr> <td>Disclosure</td> <td>Publicly revealing
-      personal information.</td> </tr> <tr> <td>Exposure</td> <td>Revealing
-      intimate or embarrassing details.</td> </tr> <tr> <td>Increased
-      Accessibility</td> <td>Making previously obscure or private data widely
-      available.</td> </tr> <tr> <td>Blackmail</td> <td>Using private info to
-      manipulate or threaten users.</td> </tr> <tr> <td>Appropriation</td>
-      <td>Using someone’s identity or personal data to serve another’s
-      interests.</td> </tr> <tr> <td>Distortion</td> <td>Producing inaccurate
-      outputs that misrepresent individuals.</td> </tr> <tr> <td
-      rowspan="2">Invasion</td> <td>Intrusion</td> <td>Intruding into personal
-      life or space.</td> </tr> <tr> <td>Decisional Interference</td>
-      <td>Influencing user decisions through biased suggestions.</td> </tr>
-      </tbody> </table> </div> </div> <!----------------Part
-      A--------------------> <div class="section"> <h2>Part A - Dialogue
-      Context</h2> <div class="dialogue-box">${full_dialogue_context}</div>
-      </div> <!----------------Part B--------------------> <div
-      class="phrase-evaluation-block"> <h2>Part B - Privacy Risk
-      Verification</h2> <div id="dynamic-container"></div> </div>
-      <!----------------Part C--------------------> <div
-      class="mapping-evaluation-block"> <div
-      id="dynamic-mapping-container"></div> </div> </div> ]]>
+      <div class="container">
+        <!----------------Instruction-------------------->
+        <div class="instruction-container">
+          <div class="tab-header">
+            <button
+              type="button"
+              class="tab-btn active"
+              onclick="openTab(event, 'Summary')"
+            >
+              Summary
+            </button>
+            <button
+              type="button"
+              class="tab-btn"
+              onclick="openTab(event, 'Taxonomy')"
+            >
+              Taxonomy Reference
+            </button>
+          </div>
+          <div id="Summary" class="tab-content active">
+            <h3>Task Summary</h3>
+            <p>
+              This study is part of a broader research project investigating
+              privacy risks and human evaluation of AI systems. The project has
+              received ethics approval from Macquarie University. Please review
+              the
+              <a href="https://shorturl.at/hme0c" target="_blank"
+                >Participant Information and Consent Form (PICF)</a
+              >
+              before proceeding. By continuing with this task, you indicate your
+              consent to participate.
+            </p>
+            <p>
+              Help us improve AI safety by validating a
+              <strong>Privacy-Leak Detection Framework</strong>. In this task,
+              you will review real-world dialogues between users and ChatGPT.
+              Your goal is to determine if user prompts contain sensitive
+              disclosures or if the assistant is exposing personal information
+              and making "hidden" guesses about the user (e.g., guessing their
+              age or location based on context).
+            </p>
+            <ul>
+              <li>
+                <strong>Part A:</strong> Read the full dialogue to understand
+                the conversation flow.
+              </li>
+              <li>
+                <strong>Part B:</strong> Evaluate whether the system correctly
+                identified privacy risks within specific phrases.
+              </li>
+              <li>
+                <strong>Part C:</strong> Verify if the identified risk is
+                assigned to the correct category in our Privacy Taxonomy.
+              </li>
+            </ul>
+          </div>
+          <div id="Taxonomy" class="tab-content">
+            <h3>Privacy Taxonomy</h3>
+            <table class="taxonomy-table">
+              <thead>
+                <tr style="background-color: #f2f2f2">
+                  <th>Privacy Pillar</th>
+                  <th>Category</th>
+                  <th>Definition</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="2">Information Collection</td>
+                  <td>Surveillance</td>
+                  <td>
+                    Collecting data about individuals without their knowledge or
+                    consent.
+                  </td>
+                </tr>
+                <tr>
+                  <td>Interrogation</td>
+                  <td>Prompting users to disclose sensitive information.</td>
+                </tr>
+                <tr>
+                  <td rowspan="5">Information Processing</td>
+                  <td>Aggregation</td>
+                  <td>Combining data to reveal new insights.</td>
+                </tr>
+                <tr>
+                  <td>Identification</td>
+                  <td>Re-identifying individuals from anonymized data.</td>
+                </tr>
+                <tr>
+                  <td>Insecurity</td>
+                  <td>
+                    Failing to protect personal data adequately, leading to
+                    potential data leaks.
+                  </td>
+                </tr>
+                <tr>
+                  <td>Secondary Use</td>
+                  <td>
+                    Using collected data for purposes beyond the original
+                    intent, such as profiling.
+                  </td>
+                </tr>
+                <tr>
+                  <td>Exclusion</td>
+                  <td>
+                    Preventing individuals from accessing or controlling their
+                    data.
+                  </td>
+                </tr>
+                <tr>
+                  <td rowspan="7">Information Dissemination</td>
+                  <td>Breach of Confidentiality</td>
+                  <td>Sharing private information without authorization.</td>
+                </tr>
+                <tr>
+                  <td>Disclosure</td>
+                  <td>Publicly revealing personal information.</td>
+                </tr>
+                <tr>
+                  <td>Exposure</td>
+                  <td>Revealing intimate or embarrassing details.</td>
+                </tr>
+                <tr>
+                  <td>Increased Accessibility</td>
+                  <td>
+                    Making previously obscure or private data widely available.
+                  </td>
+                </tr>
+                <tr>
+                  <td>Blackmail</td>
+                  <td>Using private info to manipulate or threaten users.</td>
+                </tr>
+                <tr>
+                  <td>Appropriation</td>
+                  <td>
+                    Using someone’s identity or personal data to serve another’s
+                    interests.
+                  </td>
+                </tr>
+                <tr>
+                  <td>Distortion</td>
+                  <td>
+                    Producing inaccurate outputs that misrepresent individuals.
+                  </td>
+                </tr>
+                <tr>
+                  <td rowspan="2">Invasion</td>
+                  <td>Intrusion</td>
+                  <td>Intruding into personal life or space.</td>
+                </tr>
+                <tr>
+                  <td>Decisional Interference</td>
+                  <td>
+                    Influencing user decisions through biased suggestions.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!----------------Part
+      A-------------------->
+        <div class="section">
+          <h2>Part A - Dialogue Context</h2>
+          <div class="dialogue-box">${full_dialogue_context}</div>
+        </div>
+        <!----------------Part B-------------------->
+        <div class="phrase-evaluation-block">
+          <h2>Part B - Privacy Risk Verification</h2>
+          <div id="dynamic-container"></div>
+        </div>
+        <!----------------Part C-------------------->
+        <div class="mapping-evaluation-block">
+          <div id="dynamic-mapping-container"></div>
+        </div>
+      </div>
+      ]]>
     </crowd-form>
 
     <script>
