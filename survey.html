@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Tab Styling */
+      .instruction-container {
+        margin-bottom: 20px;
+        border: 1px solid #007bff;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .tab-header {
+        background: #007bff;
+        display: flex;
+        border-bottom: 1px solid #0056b3;
+      }
+      .tab-btn {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        flex: 1;
+        transition: 0.3s;
+      }
+      .tab-btn:hover {
+        background: #0056b3;
+      }
+      .tab-btn.active {
+        background: white;
+        color: #007bff;
+      }
+      .tab-content {
+        padding: 20px;
+        display: none;
+        background: white;
+        max-height: 500px;
+        overflow-y: auto;
+      }
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Taxonomy Table Styling */
+      .taxonomy-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .taxonomy-table th,
+      .taxonomy-table td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+
+      /* Layout Styles */
+      .container {
+        font-family: sans-serif;
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+      }
+      /*.section { margin-bottom: 25px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #fdfdfd; }*/
+      .dialogue-box {
+        background: #fff;
+        border-left: 5px solid #007bff;
+        padding: 15px;
+        font-family: monospace;
+        white-space: pre-wrap;
+        margin: 10px 0;
+        font-size: 13px;
+      }
+      .hidden {
+        display: none;
+      }
+      .analysis-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+        font-size: 13px;
+      }
+      .analysis-table th,
+      .analysis-table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+      }
+      .highlight {
+        color: #d9534f;
+        font-weight: bold;
+      }
+      .feedback-box {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+      }
+      .agree-box {
+        background: #7a897a;
+        border-left: 4px solid #28a745;
+      }
+      .correction-box {
+        background: #fff4f4;
+        border-left: 4px solid #d9534f;
+      }
+      h2 {
+        border-bottom: 2px solid #333;
+        padding-bottom: 5px;
+      }
+      h3 {
+        color: #0056b3;
+        margin-top: 0;
+      }
+      .label-text {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .warning-note {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        font-size: 13px;
+      }
+      crowd-text-area {
+        transition: border 0.3s ease;
+        border-radius: 4px;
+      }
+      .error-border {
+        border: 3px solid #d9534f !important;
+      }
+      .row-error {
+        outline: 2px solid #d9534f !important;
+      }
+      .group-error {
+        border: 2px solid #d9534f !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+    <crowd-form answer-format="flatten-objects">
+      <![CDATA[ <div class="container">
+      <!----------------Instruction--------------------> <div
+      class="instruction-container"> <div class="tab-header"> <button
+      type="button" class="tab-btn active" onclick="openTab(event,
+      'Summary')">Summary</button> <button type="button" class="tab-btn"
+      onclick="openTab(event, 'Taxonomy')">Taxonomy Reference</button> </div>
+      <div id="Summary" class="tab-content active"> <h3>Task Summary</h3> <p>
+      This study is part of a broader research project investigating privacy
+      risks and human evaluation of AI systems. The project has received ethics
+      approval from Macquarie University. Please review the <a
+      href="https://shorturl.at/hme0c" target="_blank">Participant Information
+      and Consent Form (PICF)</a> before proceeding. By continuing with this
+      task, you indicate your consent to participate. </p> <p> Help us improve
+      AI safety by validating a <strong>Privacy-Leak Detection
+      Framework</strong>. In this task, you will review real-world dialogues
+      between users and ChatGPT. Your goal is to determine if user prompts
+      contain sensitive disclosures or if the assistant is exposing personal
+      information and making "hidden" guesses about the user (e.g., guessing
+      their age or location based on context). </p> <ul> <li><strong>Part
+      A:</strong> Read the full dialogue to understand the conversation
+      flow.</li> <li><strong>Part B:</strong> Evaluate whether the system
+      correctly identified privacy risks within specific phrases.</li>
+      <li><strong>Part C:</strong> Verify if the identified risk is assigned to
+      the correct category in our Privacy Taxonomy.</li> </ul> </div> <div
+      id="Taxonomy" class="tab-content"> <h3>Privacy Taxonomy</h3> <table
+      class="taxonomy-table"> <thead> <tr style="background-color: #f2f2f2;">
+      <th>Privacy Pillar</th> <th>Category</th> <th>Definition</th> </tr>
+      </thead> <tbody> <tr> <td rowspan="2">Information Collection</td>
+      <td>Surveillance</td> <td>Collecting data about individuals without their
+      knowledge or consent.</td> </tr> <tr> <td>Interrogation</td> <td>Prompting
+      users to disclose sensitive information.</td> </tr> <tr> <td
+      rowspan="5">Information Processing</td> <td>Aggregation</td> <td>Combining
+      data to reveal new insights.</td> </tr> <tr> <td>Identification</td>
+      <td>Re-identifying individuals from anonymized data.</td> </tr> <tr>
+      <td>Insecurity</td> <td>Failing to protect personal data adequately,
+      leading to potential data leaks.</td> </tr> <tr> <td>Secondary Use</td>
+      <td>Using collected data for purposes beyond the original intent, such as
+      profiling.</td> </tr> <tr> <td>Exclusion</td> <td>Preventing individuals
+      from accessing or controlling their data.</td> </tr> <tr> <td
+      rowspan="7">Information Dissemination</td> <td>Breach of
+      Confidentiality</td> <td>Sharing private information without
+      authorization.</td> </tr> <tr> <td>Disclosure</td> <td>Publicly revealing
+      personal information.</td> </tr> <tr> <td>Exposure</td> <td>Revealing
+      intimate or embarrassing details.</td> </tr> <tr> <td>Increased
+      Accessibility</td> <td>Making previously obscure or private data widely
+      available.</td> </tr> <tr> <td>Blackmail</td> <td>Using private info to
+      manipulate or threaten users.</td> </tr> <tr> <td>Appropriation</td>
+      <td>Using someone’s identity or personal data to serve another’s
+      interests.</td> </tr> <tr> <td>Distortion</td> <td>Producing inaccurate
+      outputs that misrepresent individuals.</td> </tr> <tr> <td
+      rowspan="2">Invasion</td> <td>Intrusion</td> <td>Intruding into personal
+      life or space.</td> </tr> <tr> <td>Decisional Interference</td>
+      <td>Influencing user decisions through biased suggestions.</td> </tr>
+      </tbody> </table> </div> </div> <!----------------Part
+      A--------------------> <div class="section"> <h2>Part A - Dialogue
+      Context</h2> <div class="dialogue-box">${full_dialogue_context}</div>
+      </div> <!----------------Part B--------------------> <div
+      class="phrase-evaluation-block"> <h2>Part B - Privacy Risk
+      Verification</h2> <div id="dynamic-container"></div> </div>
+      <!----------------Part C--------------------> <div
+      class="mapping-evaluation-block"> <div
+      id="dynamic-mapping-container"></div> </div> </div> ]]>
+    </crowd-form>
+
+    <script>
+      // -----------Instructions Tab ----------
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+      // Global Validation Script
+      document.querySelector("crowd-form").onsubmit = function (e) {
+        let allValid = true;
+        let errorMessage = "";
+
+        function isElementVisible(el) {
+          if (!el) return false;
+          const style = window.getComputedStyle(el);
+          return (
+            style.display !== "none" &&
+            style.visibility !== "hidden" &&
+            el.offsetParent !== null
+          );
+        }
+
+        // --- DISABLE hidden crowd-radio-buttons ---
+        document.querySelectorAll("crowd-radio-group").forEach((group) => {
+          if (!isElementVisible(group)) {
+            group.querySelectorAll("crowd-radio-button").forEach((btn) => {
+              btn.setAttribute("name-disabled", btn.getAttribute("name") || "");
+              btn.removeAttribute("name");
+            });
+          } else {
+            group.querySelectorAll("crowd-radio-button").forEach((btn) => {
+              if (btn.getAttribute("name-disabled")) {
+                btn.setAttribute("name", btn.getAttribute("name-disabled"));
+                btn.removeAttribute("name-disabled");
+              }
+            });
+          }
+        });
+
+        // --- DISABLE hidden crowd-text-areas ---
+        document.querySelectorAll("crowd-text-area").forEach((area) => {
+          const feedbackBox = area.closest(".feedback-box");
+          const followupsBox = area.closest('[id$="_yes_followups"]');
+          const isVisible =
+            (feedbackBox && isElementVisible(feedbackBox)) ||
+            (followupsBox && isElementVisible(followupsBox));
+
+          if (!isVisible) {
+            area.setAttribute("name-disabled", area.getAttribute("name") || "");
+            area.removeAttribute("name");
+          } else {
+            if (area.getAttribute("name-disabled")) {
+              area.setAttribute("name", area.getAttribute("name-disabled"));
+              area.removeAttribute("name-disabled");
+            }
+          }
+        });
+
+        // --- DISABLE hidden standard radio inputs ---
+        document.querySelectorAll('input[type="radio"]').forEach((input) => {
+          const taxDiv = input.closest('[id$="_taxonomy_validation"]');
+          if (taxDiv && !isElementVisible(taxDiv)) {
+            input.setAttribute(
+              "name-disabled",
+              input.getAttribute("name") || "",
+            );
+            input.removeAttribute("name");
+          } else {
+            if (input.getAttribute("name-disabled")) {
+              input.setAttribute("name", input.getAttribute("name-disabled"));
+              input.removeAttribute("name-disabled");
+            }
+          }
+        });
+
+        // --- 1. Validate Part B (Crowd Radio Groups) ---
+        document.querySelectorAll("crowd-radio-group").forEach((group) => {
+          if (isElementVisible(group)) {
+            const isSelected =
+              group.querySelector("crowd-radio-button[checked]") ||
+              group.querySelector("crowd-radio-button[selected]");
+            if (!isSelected) {
+              allValid = false;
+              group.style.border = "2px solid #d9534f";
+            } else {
+              group.style.border = "none";
+            }
+          }
+        });
+
+        // --- 2. Validate Part C (Standard Radios within Mapping Items) ---
+        const mappingContainer = document.getElementById(
+          "dynamic-mapping-container",
+        );
+        if (mappingContainer) {
+          mappingContainer
+            .querySelectorAll(".mapping-item")
+            .forEach((mappingItem) => {
+              if (isElementVisible(mappingItem)) {
+                const taxDiv = mappingItem.querySelector(
+                  '[id$="_taxonomy_validation"]',
+                );
+                if (!taxDiv) return;
+
+                if (isElementVisible(taxDiv)) {
+                  // Select only rows in the table body to avoid checking the header
+                  taxDiv.querySelectorAll("tbody tr").forEach((row) => {
+                    // 1. Identify the two distinct radio groups by their name suffixes
+                    const pillarRadios = row.querySelectorAll(
+                      'input[name$="_pillar_agreement"]',
+                    );
+                    const categoryRadios = row.querySelectorAll(
+                      'input[name$="_cat_agreement"]',
+                    );
+
+                    if (pillarRadios.length > 0 && categoryRadios.length > 0) {
+                      // 2. Check each group independently
+                      const isPillarSelected = Array.from(pillarRadios).some(
+                        (input) => input.checked,
+                      );
+                      const isCategorySelected = Array.from(
+                        categoryRadios,
+                      ).some((input) => input.checked);
+
+                      // 3. Row is valid ONLY if all three parts are completed
+                      if (!isPillarSelected || !isCategorySelected) {
+                        allValid = false;
+                        row.style.outline = "2px solid #d9534f";
+                        row.style.backgroundColor = "#fff8f8"; // Visual warning
+                      } else {
+                        row.style.outline = "none";
+                        row.style.backgroundColor = "transparent";
+                      }
+                    }
+                  });
+                } else {
+                  taxDiv.style.border = "none";
+                }
+              } else {
+                mappingItem.style.border = "none";
+              }
+            });
+        }
+
+        // --- 3. Validate visible Text Areas (Min 5 words) ---
+        document.querySelectorAll("crowd-text-area").forEach((area) => {
+          const feedbackBox = area.closest(".feedback-box");
+          const followupsBox = area.closest('[id$="_yes_followups"]');
+          const isVisible =
+            (feedbackBox && isElementVisible(feedbackBox)) ||
+            (followupsBox && isElementVisible(followupsBox));
+
+          if (isVisible) {
+            const rawValue =
+              typeof area.value === "string" &&
+              area.value !== area.getAttribute("placeholder")
+                ? area.value
+                : area.querySelector("textarea")?.value || "";
+            const words = rawValue
+              .trim()
+              .split(/\s+/)
+              .filter((w) => w.length > 0);
+            if (words.length < 5) {
+              allValid = false;
+              area.style.border = "2px solid #d9534f";
+              if (!errorMessage)
+                errorMessage = "Explanations must be at least 5 words long.";
+            } else {
+              area.style.border = "1px solid #28a745";
+            }
+          } else {
+            area.style.border = "none";
+          }
+        });
+
+        // --- If invalid, restore all disabled names so user can fix and resubmit ---
+        if (!allValid) {
+          document.querySelectorAll("[name-disabled]").forEach((el) => {
+            el.setAttribute("name", el.getAttribute("name-disabled"));
+            el.removeAttribute("name-disabled");
+          });
+          alert(
+            errorMessage ||
+              "Incomplete Form: Please answer all visible questions and provide detailed explanations (at least 5 words) for your choices.",
+          );
+          e.preventDefault();
+          return false;
+        }
+      };
+      // --------------Part B------------------
+      function renderDynamicContent(phrases) {
+        const container = document.getElementById("dynamic-container");
+        let html = "";
+
+        // Check if phrases exists
+        const hasPhrases = phrases.length > 0;
+
+        if (!hasPhrases) {
+          // Version 1: No analysis data
+          html += `
+                  <div style="margin-bottom: 30px; border: 1px solid #ccc; padding: 15px; border-radius: 8px;">
+                      <p><strong>1. Do you agree that there is no privacy risk?</strong></p>
+                          <crowd-radio-group>
+                              <crowd-radio-button name="agree_yes" value="yes" onclick="toggleB(true)">Yes</crowd-radio-button>
+                              <crowd-radio-button name="agree_no" value="no" onclick="toggleB(false)">No</crowd-radio-button>
+                          </crowd-radio-group>
+
+                      <div id="yes_block" class="hidden feedback-box agree-box">
+                          <p class="label-text">Explain why you agree this is safe:</p>
+                          <crowd-text-area name="yes_reason"></crowd-text-area>
+                      </div>
+
+                      <div id="no_block" class="hidden feedback-box correction-box">
+                          <p class="label-text">Describe the risk the systems missed:</p>
+                          <crowd-text-area name="no_reason"></crowd-text-area>
+                      </div>
+                  </div>
+              `;
+        } else {
+          // Version 2: Has analysis data
+          html += `
+                  <div class="warning-note">
+                      <strong>Note:</strong> The explanation and rationale provided for the privacy information may not be reliable and should be verified against the source text.
+                  </div>
+              `;
+
+          phrases.forEach((item, index) => {
+            html += `
+                      <div style="margin-bottom: 30px; border: 1px solid #ccc; padding: 15px; border-radius: 8px;">
+                          <p><strong>Phrase:</strong> <span class="highlight">"${item.phrase}"</span></p>
+
+                          <table class="analysis-table">
+                              <tr><th>Feature</th><th>Analysis A</th><th>Analysis B</th></tr>
+                              <tr><td><strong>Privacy Info</strong></td><td>${item.info_A}. ${item.rationale_A}</td><td>${item.info_B}. ${item.rationale_B}</td></tr>
+                          </table>
+
+                          <p><strong>1. Do you agree this constitutes a privacy risk?</strong></p>
+                          <crowd-radio-group>
+                              <crowd-radio-button name="B${item.id}_Q1_yes" value="yes" onclick="toggleB1('${item.id}', true)">Yes</crowd-radio-button>
+                              <crowd-radio-button name="B${item.id}_Q1_no" value="no" onclick="toggleB1('${item.id}', false)">No</crowd-radio-button>
+                          </crowd-radio-group>
+
+                          <div id="B${item.id}_Q1_no_reason_box" class="hidden feedback-box correction-box">
+                              <p class="label-text">Why is this not a risk?</p>
+                              <crowd-text-area name="B${item.id}_Q1_not_risk_explanation" placeholder="Provide a reason..."></crowd-text-area>
+                          </div>
+
+                          <div id="B${item.id}_Q1_yes_followups" class="hidden">
+                              <p><strong>2. Which Analysis provides more sensible privacy info?</strong></p>
+                              <crowd-radio-group>
+                                  <crowd-radio-button name="B${item.id}_Q2_A" value="A">Analysis A</crowd-radio-button>
+                                  <crowd-radio-button name="B${item.id}_Q2_B" value="B">Analysis B</crowd-radio-button>
+                                  <crowd-radio-button name="B${item.id}_Q2_Both" value="Both">Both</crowd-radio-button>
+                              </crowd-radio-group>
+                              <crowd-text-area name="B${item.id}_Q2_reason" placeholder="Explain your choice..."></crowd-text-area>
+                          </div>
+                      </div>
+                  `;
+          });
+        }
+
+        container.innerHTML = html;
+      }
+
+      // Toggle Functions
+      function toggleB1(pId, isYes) {
+        document.getElementById("B" + pId + "_Q1_yes_followups").style.display =
+          isYes ? "block" : "none";
+        document.getElementById("B" + pId + "_Q1_no_reason_box").style.display =
+          isYes ? "none" : "block";
+      }
+
+      function toggleB(isYes) {
+        document.getElementById("yes_block").style.display = isYes
+          ? "block"
+          : "none";
+        document.getElementById("no_block").style.display = isYes
+          ? "none"
+          : "block";
+      }
+
+      // -------------Part C---------------
+      function renderDynamicMappingContent(mappings) {
+        const container = document.getElementById("dynamic-mapping-container");
+        let html = "";
+
+        // Check if mappings exists
+        const hasMappings = mappings.length > 0;
+
+        // If having mappings
+        if (hasMappings) {
+          html += `
+                  <h2>Part C - Taxonomy Mapping Validation</h2>
+                  <p>Please evaluate each proposed mapping.</p>
+              `;
+
+          mappings.forEach((item, phraseIndex) => {
+            html += `
+                      <div class="mapping-item" style="margin-bottom: 30px; border: 1px solid #ccc; padding: 15px; border-radius: 8px;">
+                          <p><strong>Phrase:</strong> <span class="highlight">"${item.phrase}"</span></p>
+                          <p><strong>Privacy Info:</strong> ${item.privacy_info}</p>
+                          <p><strong>Rationale:</strong> ${item.privacy_rationale}</p>
+
+                          <hr>
+
+                          <div>
+                              <p><strong>1. Do you agree that this phrase constitutes a privacy risk?</strong></p>
+                              <crowd-radio-group>
+                                  <crowd-radio-button name="C${item.id}_risk_confirm_yes" value="yes" onclick="toggleRiskFlow('${item.id}', 'yes')">Yes</crowd-radio-button>
+                                  <crowd-radio-button name="C${item.id}_risk_confirm_no" value="no" onclick="toggleRiskFlow('${item.id}', 'no')">No</crowd-radio-button>
+                              </crowd-radio-group>
+
+                              <div id="C${item.id}_no_risk_explanation" class="hidden feedback-box correction-box">
+                                  <p class="label-text">Describe why this phrase does not pose a privacy risk:</p>
+                                  <crowd-text-area name="C${item.id}_no_risk_reason" placeholder="e.g., This is general knowledge or public info."></crowd-text-area>
+                              </div>
+                          </div>
+
+                          <div id="C${item.id}_taxonomy_validation" class="hidden" style="margin-top: 15px;">
+                              <p><strong>2. Do you agree with the Pillar and Category mapping(s) for this phrase?</strong></p>
+                              <table class="analysis-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                                  <thead>
+                                      <tr style="background-color: #f2f2f2;">
+                                          <th>Pillar</th>
+                                          <th>Category</th>
+                                          <th>Rationale</th>
+                                          <th>1. Pillar Correct?</th>
+                                          <th>2. Category Correct?</th>
+                                          <th>Your Feedback</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                  `;
+
+            // Nested loop for multiple privacy mappings per phrase
+            item.privacy.forEach((mapping, mappingIndex) => {
+              html += `
+                          <tr>
+                              <td>${mapping.pillar}</td>
+                              <td>${mapping.category}</td>
+                              <td>${mapping.mapping_rationale}</td>
+                              <td>
+                                  <input type="radio" id="C${item.id}_${mapping.category}_pillar_yes" name="C${item.id}_${mapping.category}_pillar_agreement" value="yes">
+                                  <label for="C${item.id}_${mapping.category}_pillar_yes">Yes</label>
+                                  <input type="radio" id="C${item.id}_${mapping.category}_pillar_no" name="C${item.id}_${mapping.category}_pillar_agreement" value="no">
+                                  <label for="C${item.id}_${mapping.category}_pillar_no">No</label>
+                              </td>
+
+                              <td>
+                                  <input type="radio" id="C${item.id}_${mapping.category}_cat_yes" name="C${item.id}_${mapping.category}_cat_agreement" value="yes">
+                                  <label for="C${item.id}_${mapping.category}_cat_yes">Yes</label>
+                                  <input type="radio" id="C${item.id}_${mapping.category}_cat_no" name="C${item.id}_${mapping.category}_cat_agreement" value="no">
+                                  <label for="C${item.id}_${mapping.category}_cat_no">No</label>
+                              </td>
+
+                              <td style="padding: 10px;">
+                                  <crowd-text-area name="C${item.id}_${mapping.category}_rationale" placeholder="Explain your choice..." class="feedback-box"></crowd-text-area>
+                              </td>
+                          </tr>
+                      `;
+            });
+
+            html += `
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  `;
+          });
+        }
+
+        container.innerHTML = html;
+      }
+
+      function toggleRiskFlow(pId, choice) {
+        const taxSection = document.getElementById(
+          "C" + pId + "_taxonomy_validation",
+        );
+        const noRiskBox = document.getElementById(
+          "C" + pId + "_no_risk_explanation",
+        );
+
+        if (choice === "yes") {
+          taxSection.style.display = "block";
+          noRiskBox.style.display = "none";
+        } else {
+          taxSection.style.display = "none";
+          noRiskBox.style.display = "block";
+        }
+      }
+
+      function getURLParameter(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+      }
+
+      // 1. Read the raw data from the URL
+      const rawDialogue = getURLParameter("full_dialogue_context");
+      const rawPhrases = getURLParameter("phrases_array");
+      const rawMappings = getURLParameter("mappings_array");
+
+      // 2. Parse and Initialize
+      // We use try/catch because URL data can sometimes be "malformed"
+      // due to character encoding in the URL bar.
+      try {
+        // Context is usually just a string
+        const dialogueContext = rawDialogue || "No dialogue provided.";
+
+        // Arrays need to be parsed from JSON strings
+        const phrases = rawPhrases ? JSON.parse(rawPhrases) : [];
+        const mappings = rawMappings ? JSON.parse(rawMappings) : [];
+
+        // 3. Trigger your render functions (from your previous code)
+        // Make sure these match the variable names in your existing logic
+        window.onload = function () {
+          // Inject the dialogue context into the Part A box
+          document.querySelector(".dialogue-box").textContent = dialogueContext;
+
+          // Run your rendering logic
+          renderDynamicContent(phrases);
+          renderDynamicMappingContent(mappings);
+        };
+      } catch (e) {
+        console.error("Error parsing MTurk data:", e);
+      }
+    </script>
+  </body>
+</html>
